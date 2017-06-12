@@ -84,7 +84,7 @@ const customerFactory = new Factory(_customers);
 /* Reuseable Components*/
 Vue.component('customer', {
     template : `
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>{{customer.firstName}} {{customer.lastName}}</strong>
@@ -100,7 +100,7 @@ Vue.component('customer', {
 
 Vue.component('customerOrder', {
     template : `
-        <table class="table table-hover table-bordered table-striped">
+        <table class="table table-hover table-bordered table-striped table-condensed">
             <thead>
                 <tr>
                     <th>Product</th>
@@ -110,7 +110,7 @@ Vue.component('customerOrder', {
                 </tr>
             </thead>
             <tbody>
-                <tr v-show="!(customer.orders || customer.order.length > 0)" class="error">
+                <tr v-show="!customer.orders || !(customer.orders.length > 0)" class="danger">
                     <td colspan="4">
                         <span class="text-center">No orders</span>
                     </td>
@@ -120,6 +120,10 @@ Vue.component('customerOrder', {
                     <td> {{order.quantity}} </td>
                     <td> {{order.price}} </td>
                     <td> {{order.orderTotal}} </td>
+                </tr>
+                <tr class="info">
+                    <td colspan="3"></td>
+                    <td> 0.00 </td>
                 </tr>
             </tbody>
         </table>
@@ -176,7 +180,28 @@ const CustomerOrder = Vue.extend({
 });
 
 const Orders = Vue.extend({
-    
+    data() {
+        return {
+            customers : []
+        };
+    },
+    created() {
+        this.getCustomers();
+    },
+    methods : {
+        getCustomers() {
+            this.customers = customerFactory.getAll();
+        }
+    },
+    template : `
+        <div>
+            <h1>Customer Orders</h1>
+            <div v-for="customer in customers">
+                <p><strong>{{customer.firstName}} {{customer.lastName}}</strong></p>
+                <customerOrder :key="customer.id" :customer="customer"></customerOrder>
+            </div>
+        </div>
+    `
 });
 
 /*Routes*/

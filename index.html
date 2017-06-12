@@ -9,8 +9,22 @@
     
 </head>
 <body>
-    <div class="container" id="app">
-        <router-view></router-view>
+    <div id="app">
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#"><i class="glyphicon glyphicon-user"></i></a>
+                </div>
+
+                <ul class="nav navbar-nav">
+                    <li><router-link to="/customers">Customers</router-link></li><li><router-link to="/orders">Orders</router-link></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <router-view></router-view>
+        </div>
     </div>
 
     <script src="node_modules/vue/dist/vue.js"></script>
