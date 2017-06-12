@@ -123,12 +123,25 @@ Vue.component('customerOrder', {
                 </tr>
                 <tr class="info">
                     <td colspan="3"></td>
-                    <td> 0.00 </td>
+                    <td> {{ordersTotal}} </td>
                 </tr>
             </tbody>
         </table>
     `,
-    props : ['customer']
+    props : ['customer'],
+    computed : {
+        ordersTotal() {
+            let counter = 0;
+            if (!this.customer.orders) {
+                return counter;
+            }
+
+            this.customer.orders.forEach((order) => {
+                counter += order.orderTotal;
+            });
+            return counter;
+        }
+    }
 });
 /*Components*/
 const Customers = Vue.extend({
