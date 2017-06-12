@@ -1,0 +1,13 @@
+{
+  "name": "customer-app",
+  "version": "0.0.1",
+  "description": "\"A simple customer CRUD app with VueJS\"",
+  "main": "main.js",
+  "author": "Adekoyejo Akinhanmi <koyesavedbygrace@yahoo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "3.3.6",
+    "vue": "2.3.3",
+    "vue-router": "2.5.3"
+  }
+}
