@@ -98,8 +98,33 @@ Vue.component('customer', {
     props : ['customer']
 });
 
-Vue.component('customerOrders', {
-    
+Vue.component('customerOrder', {
+    template : `
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-show="!(customer.orders || customer.order.length > 0)" class="error">
+                    <td colspan="4">
+                        <span class="text-center">No orders</span>
+                    </td>
+                </tr>
+                <tr v-for="order in customer.orders">
+                    <td> {{order.product}} </td>
+                    <td> {{order.quantity}} </td>
+                    <td> {{order.price}} </td>
+                    <td> {{order.orderTotal}} </td>
+                </tr>
+            </tbody>
+        </table>
+    `,
+    props : ['customer']
 });
 /*Components*/
 const Customers = Vue.extend({
@@ -121,7 +146,33 @@ const Customers = Vue.extend({
 });
 
 const CustomerOrder = Vue.extend({
-    
+    data() {
+        return {
+            customer : {}
+        };
+    },
+    created() {
+        this.getCustomer();
+    },
+    methods : {
+        getCustomer() {
+            this.customer = customerFactory.getOne(
+                this.$route.params.id
+            );
+        }
+    },
+    template : `
+        <div>
+            <h1>Customer Order</h1>
+            <h2>Orders for {{customer.firstName}} {{customer.lastName}}</h2>
+            <p>{{customer.address}}</p>
+            <p>{{customer.city}}</p>
+            <div>
+                <customerOrder :key="customer.id"
+                               :customer="customer">
+                </customerOrder>
+            </div>
+    `
 });
 
 const Orders = Vue.extend({
