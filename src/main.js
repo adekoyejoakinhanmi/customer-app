@@ -2,7 +2,7 @@
 /*global console, Vue, VueRouter, Factory*/
 
 /*Data*/
-const customers = [
+const _customers = [
         {
             id: 1, firstName: 'Lee', lastName: 'Carroll', address: '1234 Anywhere St.', city: 'Phoenix',
             orders: [
@@ -77,12 +77,47 @@ const customers = [
             id: 11, firstName: 'Shanika', lastName: 'Passmore', address: '459 S. International Dr.', city: 'Orlando'
         }
     ];
-/*Factory*/
-var customerFactory = new Factory(customers);
 
+/*Factory*/
+const customerFactory = new Factory(_customers);
+
+/* Reuseable Components*/
+Vue.component('customer', {
+    template : `
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{customer.firstName}} {{customer.lastName}}</strong>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{customer.city}}</p>
+                        <p><router-link :to="{name : 'customer_order', params : {id : customer.id}}"> View Orders </router-link></p>
+                    </div>
+                </div>
+            </div>`,
+    props : ['customer']
+});
+
+Vue.component('customerOrders', {
+    
+});
 /*Components*/
 const Customers = Vue.extend({
-    
+    data() {
+        return {
+            customers : customerFactory.getAll()
+        };
+    },
+    template : `
+        <div>
+            <h1 class="h1">Customers</h1>
+            <div class="row">
+                <customer :key="customer.id"
+                          :customer="customer"
+                          v-for="customer in customers"></customer>
+            </div>
+        </div>
+    `
 });
 
 const CustomerOrder = Vue.extend({
@@ -121,5 +156,8 @@ const router = new VueRouter({
 /*App*/
 const App = new Vue({
     router,
-    el : "#app" 
+    el : "#app",
+    created() {
+        this.$router.push('/customers');
+    }
 });
