@@ -123,7 +123,7 @@ Vue.component('customerOrder', {
                 </tr>
                 <tr class="info">
                     <td colspan="3"></td>
-                    <td> {{ordersTotal}} </td>
+                    <td> {{ currency(ordersTotal) }} </td>
                 </tr>
             </tbody>
         </table>
@@ -141,25 +141,68 @@ Vue.component('customerOrder', {
             });
             return counter;
         }
+    },
+    methods : {
+        currency(val) {
+            return `$${val.toFixed(2)}`;
+        }
     }
 });
+
 /*Components*/
 const Customers = Vue.extend({
     data() {
         return {
-            customers : customerFactory.getAll()
+            customers : customerFactory.getAll(),
+            newCustomer : {
+                firstName : '',
+                lastName : '',
+                city : ''
+            }
         };
     },
     template : `
         <div>
-            <h1 class="h1">Customers</h1>
+            <h1>Customers</h1>
+            <form class="row">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="First Name" v-model="newCustomer.firstName">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Last Name" v-model="newCustomer.lastName">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="City" v-model="newCustomer.city">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <button type="button"
+                                class="btn btn-primary"
+                                @click="addCustomer"
+                                :disabled="!newCustomer.firstName && !newCustomer.lastName && !newCustomer.city">
+                            Add Customer</button>
+                    </div>
+                </div>
+            </form>
+
             <div class="row">
                 <customer :key="customer.id"
                           :customer="customer"
                           v-for="customer in customers"></customer>
             </div>
         </div>
-    `
+    `,
+    methods : {
+        addCustomer() {
+            customerFactory.addOne(this.newCustomer.firstName, this.newCustomer.lastName, this.newCustomer.city);
+        }
+    }
 });
 
 const CustomerOrder = Vue.extend({
