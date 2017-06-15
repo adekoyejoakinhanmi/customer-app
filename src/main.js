@@ -88,6 +88,9 @@ Vue.component('customer', {
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>{{customer.firstName}} {{customer.lastName}}</strong>
+                        <div class="pull-right">
+                            <a @click="removeCustomer"><i class="glyphicon glyphicon-remove"></i></a>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <p>{{customer.city}}</p>
@@ -95,7 +98,14 @@ Vue.component('customer', {
                     </div>
                 </div>
             </div>`,
-    props : ['customer']
+    props : ['customer'],
+    methods : {
+        removeCustomer() {
+            customerFactory.removeOne(
+                this.customer.id
+            );
+        }
+    }
 });
 
 Vue.component('customerOrder', {
@@ -222,16 +232,17 @@ const CustomerOrder = Vue.extend({
         }
     },
     template : `
-        <div>
+        <div class="row">>
             <h1>Customer Order</h1>
             <h2>Orders for {{customer.firstName}} {{customer.lastName}}</h2>
             <p>{{customer.address}}</p>
             <p>{{customer.city}}</p>
-            <div>
+            <div class="col-md-8">
                 <customerOrder :key="customer.id"
                                :customer="customer">
                 </customerOrder>
             </div>
+        </div>
     `
 });
 
@@ -250,9 +261,9 @@ const Orders = Vue.extend({
         }
     },
     template : `
-        <div>
+        <div class="row">
             <h1>Customer Orders</h1>
-            <div v-for="customer in customers">
+            <div class="col-md-8" v-for="customer in customers">
                 <p><strong>{{customer.firstName}} {{customer.lastName}}</strong></p>
                 <customerOrder :key="customer.id" :customer="customer"></customerOrder>
             </div>

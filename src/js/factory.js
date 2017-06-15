@@ -38,4 +38,23 @@ class Factory{
         }
         return null;
     }
+
+    removeOne(id) {
+        let index,
+            data = this._data,
+            len = data.length;
+
+        /* Splice Loop
+         * Normally, I would have looped forward but from
+         * Dan Wahlin's Code Sample in AngularJS demos,
+         * He loops backward. There must be a reason for
+         * this.
+         */
+        for (index = len - 1; index >= 0; index -= 1) {
+            if (data[index].id === id) {
+                data.splice(index, 1);
+                break;
+            }
+        }
+    }
 }
