@@ -7,11 +7,11 @@ class Factory{
     constructor(data) {
         this._data = data;
     }
-    
+
     getAll() {
         return this._data;
     }
-    
+
     addOne(firstName, lastName, city) {
         let topID = this._data.length + 1;
         this._data.push({
@@ -21,12 +21,12 @@ class Factory{
             city : city
         });
     }
-    
+
     getOne(id) {
         let index,
             data = this._data,
             len = data.length;
-        
+
         /* Fun Fact
          * The traditional for loop is more efficient here than
          * the forEach higher order function.
