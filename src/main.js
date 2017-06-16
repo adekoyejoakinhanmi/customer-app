@@ -2,167 +2,15 @@
 /*global console, Vue, VueRouter, Factory*/
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
+/* Local imports */
 import Factory from './helpers/factory';
+import customerFactory from '../externals/customers';
+
+import customer from './reusable/customer.vue';
+import customerOrder from './reusable/customerOrder.vue';
 
 Vue.use(VueRouter);
-
-/*Data*/
-const _customers = [
-        {
-            id: 1, firstName: 'Lee', lastName: 'Carroll', address: '1234 Anywhere St.', city: 'Phoenix',
-            orders: [
-                { product: 'Basket', price: 29.99, quantity: 1, orderTotal: 29.99 },
-                { product: 'Yarn', price: 9.99, quantity: 1, orderTotal: 39.96 },
-                { product: 'Needes', price: 5.99, quantity: 1, orderTotal: 5.99 }
-            ]
-        },
-        {
-            id: 2, firstName: 'Jesse', lastName: 'Hawkins', address: '89 W. Center St.', city: 'Atlanta',
-            orders: [
-                { product: 'Table', price: 329.99, quantity: 1, orderTotal: 329.99 },
-                { product: 'Chair', price: 129.99, quantity: 4, orderTotal: 519.96 },
-                { product: 'Lamp', price: 89.99, quantity: 5, orderTotal: 449.95 },
-            ]
-        },
-        {
-            id: 3, firstName: 'Charles', lastName: 'Sutton', address: '455 7th Ave.', city: 'Quebec',
-            orders: [
-                { product: 'Call of Duty', price: 59.99, quantity: 1, orderTotal: 59.99 },
-                { product: 'Controller', price: 49.99, quantity: 1, orderTotal: 49.99 },
-                { product: 'Gears of War', price: 49.99, quantity: 1, orderTotal: 49.99 },
-                { product: 'Lego City', price: 49.99, quantity: 1, orderTotal: 49.99 }
-            ]
-        },
-        {
-            id: 4, firstName: 'Albert', lastName: 'Einstein', address: '8966 N. Crescent Dr.', city: 'New York City',
-            orders: [
-                { product: 'Baseball', price: 9.99, quantity: 5, orderTotal: 49.95 },
-                { product: 'Bat', price: 19.99, quantity: 1, orderTotal: 19.99 }
-            ]
-        },
-        {
-            id: 5, firstName: 'Sonya', lastName: 'Williams', address: '55 S. Hollywood Blvd', city: 'Los Angeles'
-        },
-        {
-            id: 6, firstName: 'Victor', lastName: 'Bryan', address: '563 N. Rainier St.', city: 'Seattle',
-            orders: [
-                { product: 'Speakers', price: 499.99, quantity: 1, orderTotal: 499.99 },
-                { product: 'iPod', price: 399.99, quantity: 1, orderTotal: 399.99 }
-            ]
-        },
-        {
-            id: 7, firstName: 'Lynette', lastName: 'Gonzalez', address: '25624 Main St.', city: 'Albuquerque',
-            orders: [
-                { product: 'Statue', price: 429.99, quantity: 1, orderTotal: 429.99 },
-                { product: 'Picture', price: 1029.99, quantity: 1, orderTotal: 1029.99 }
-            ]
-        },
-        {
-            id: 8, firstName: 'Erick', lastName: 'Pittman', address: '33 S. Lake Blvd', city: 'Chicago',
-            orders: [
-                { product: 'Book: AngularJS Development', price: 39.99, quantity: 1, orderTotal: 39.99 },
-                { product: 'Book: Basket Weaving Made Simple', price: 19.99, quantity: 1, orderTotal: 19.99 }
-            ]
-        },
-        {
-            id: 9, firstName: 'Alice', lastName: 'Price', address: '3354 Town', city: 'Cleveland',
-            orders: [
-                { product: 'Webcam', price: 85.99, quantity: 1, orderTotal: 85.99 },
-                { product: 'HDMI Cable', price: 39.99, quantity: 2, orderTotal: 79.98 }
-            ]
-        },
-        {
-            id: 10, firstName: 'Gerard', lastName: 'Tucker', address: '6795 N. 53 W. Bills Dr.', city: 'Buffalo',
-            orders: [
-                { product: 'Fan', price: 49.99, quantity: 4, orderTotal: 199.96 },
-                { product: 'Remote Control', price: 109.99, quantity: 1, orderTotal: 109.99 }
-            ]
-        },
-        {
-            id: 11, firstName: 'Shanika', lastName: 'Passmore', address: '459 S. International Dr.', city: 'Orlando'
-        }
-    ];
-
-/*Factory*/
-const customerFactory = new Factory(_customers);
-
-/* Reuseable Components*/
-Vue.component('customer', {
-    template : `
-            <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>{{customer.firstName}} {{customer.lastName}}</strong>
-                        <div class="pull-right">
-                            <a @click="removeCustomer"><i class="glyphicon glyphicon-remove"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <p>{{customer.city}}</p>
-                        <p><router-link :to="{name : 'customer_order', params : {id : customer.id}}"> View Orders </router-link></p>
-                    </div>
-                </div>
-            </div>`,
-    props : ['customer'],
-    methods : {
-        removeCustomer() {
-            customerFactory.removeOne(
-                this.customer.id
-            );
-        }
-    }
-});
-
-Vue.component('customerOrder', {
-    template : `
-        <table class="table table-hover table-bordered table-striped table-condensed">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-show="!customer.orders || !(customer.orders.length > 0)" class="danger">
-                    <td colspan="4">
-                        <span class="text-center">No orders</span>
-                    </td>
-                </tr>
-                <tr v-for="order in customer.orders">
-                    <td> {{order.product}} </td>
-                    <td> {{order.quantity}} </td>
-                    <td> {{order.price}} </td>
-                    <td> {{order.orderTotal}} </td>
-                </tr>
-                <tr class="info">
-                    <td colspan="3"></td>
-                    <td> {{ currency(ordersTotal) }} </td>
-                </tr>
-            </tbody>
-        </table>
-    `,
-    props : ['customer'],
-    computed : {
-        ordersTotal() {
-            let counter = 0;
-            if (!this.customer.orders) {
-                return counter;
-            }
-
-            this.customer.orders.forEach((order) => {
-                counter += order.orderTotal;
-            });
-            return counter;
-        }
-    },
-    methods : {
-        currency(val) {
-            return `$${val.toFixed(2)}`;
-        }
-    }
-});
 
 /*Components*/
 const Customers = Vue.extend({
@@ -217,6 +65,9 @@ const Customers = Vue.extend({
         addCustomer() {
             customerFactory.addOne(this.newCustomer.firstName, this.newCustomer.lastName, this.newCustomer.city);
         }
+    },
+    components : {
+        'customer' : customer
     }
 });
 
@@ -248,7 +99,10 @@ const CustomerOrder = Vue.extend({
                 </customerOrder>
             </div>
         </div>
-    `
+    `,
+    components : {
+        'customerOrder' : customerOrder
+    }
 });
 
 const Orders = Vue.extend({
@@ -273,7 +127,10 @@ const Orders = Vue.extend({
                 <customerOrder :key="customer.id" :customer="customer"></customerOrder>
             </div>
         </div>
-    `
+    `,
+    components : {
+        'customerOrder' : customerOrder
+    }
 });
 
 /*Routes*/
