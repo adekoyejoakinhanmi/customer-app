@@ -3,7 +3,7 @@
 /* This ideally is a best practice as data is still vulnerable
  * Actually, this should be performing a server request
  */
-class Factory{
+export default class Factory{
     constructor(data) {
         this._data = data;
     }

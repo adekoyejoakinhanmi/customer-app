@@ -1,5 +1,10 @@
 /*jshint esversion:6*/
 /*global console, Vue, VueRouter, Factory*/
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Factory from './helpers/factory';
+
+Vue.use(VueRouter);
 
 /*Data*/
 const _customers = [
