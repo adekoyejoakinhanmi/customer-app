@@ -1,3 +1,11 @@
+/*jshint esversion:6 */
+import VueRouter from 'vue-router';
+
+/* Main Components */
+import Customers from './components/Customers.vue';
+import CustomerOrder from './components/CustomerOrder.vue';
+import Orders from './components/Orders.vue';
+
 /*Routes*/
 const routes = [
     {
@@ -22,3 +30,4 @@ const router = new VueRouter({
     routes : routes,
     mode : 'history'
 });
+export default router;

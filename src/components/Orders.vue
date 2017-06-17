@@ -25,7 +25,7 @@
             getCustomers() {
                 this.customers = customerFactory.getAll();
             }
-        }
+        },
         components : {
             'customerOrder' : customerOrder
         }
