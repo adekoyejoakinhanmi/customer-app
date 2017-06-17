@@ -37,8 +37,8 @@
 </template>
 
 <script>
-    import customerFactory from '../customers';
-    import { customer } from './reusable-components';
+    import customerFactory from '../../externals/customers';
+    import customer from '../reusable/customer.vue';
 
     export default {
         data() {
@@ -55,6 +55,9 @@
             addCustomer() {
                 customerFactory.addOne(this.newCustomer.firstName, this.newCustomer.lastName, this.newCustomer.city);
             }
+        },
+        components : {
+            'customer' : customer
         }
     }
 </script>
