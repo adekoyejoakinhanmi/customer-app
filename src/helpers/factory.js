@@ -1,6 +1,6 @@
 /*jshint esversion:6*/
 
-/* This ideally is a best practice as data is still vulnerable
+/* This ideally isn't a best practice as data is still vulnerable
  * Actually, this should be performing a server request
  */
 export default class Factory{
@@ -48,7 +48,7 @@ export default class Factory{
          * Normally, I would have looped forward but from
          * Dan Wahlin's Code Sample in AngularJS demos,
          * He loops backward. There must be a reason for
-         * this.
+         * this. Perhaps this is for speed.
          */
         for (index = len - 1; index >= 0; index -= 1) {
             if (data[index].id === id) {
